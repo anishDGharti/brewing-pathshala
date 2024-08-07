@@ -1,0 +1,7 @@
+coffeeenv
+
+# Ignore all migration files
+*/migrations/
+
+# Ignore all __pycache__ directories
+**/__pycache__/
