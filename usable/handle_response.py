@@ -108,25 +108,11 @@ class HandleResponseMixin:
         """
         logger.error(str(exc), exc_info=True)
         if isinstance(exc, ObjectDoesNotExist):
+            print(" iam in handle view exception")
             return self.handle_does_not_exist()
         return self.api_handle_exception()
 
 
 
 
-
-class AdminBaseApiView(DynamicPermissionMixin, APIView ,HandleResponseMixin):
-    permission_classes = []
-    authentication_classes = [CustomAuthentication]
-    
-    def validate_request_body(self, request):
-        """
-        Validate that the request body is not empty.
-        """
-
-        if not request.body:
-            return Response(
-                global_parameters.BODY_NOT_BLANK_JSON, status=status.HTTP_400_BAD_REQUEST
-            )
-        return None
 

@@ -5,6 +5,8 @@ from user_auths.models import User
 
 def filter_user(request, filter_query):
     query_set = User.objects.all()
+    if not filter_query:
+        return query_set
     filter_map = {
         'students': {'is_student': True, 'is_deleted':False},
         'all': {},
@@ -16,8 +18,7 @@ def filter_user(request, filter_query):
         'superusers': {'is_superuser': True,'is_deleted':False},
     }
 
-    if not filter_query and request.user.is_superuser:
-        return query_set
+    
 
     if filter_query in filter_map:
         return query_set.filter(**filter_map[filter_query])

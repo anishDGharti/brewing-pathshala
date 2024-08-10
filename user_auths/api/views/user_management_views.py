@@ -1,34 +1,21 @@
 from django.shortcuts import render
 import logging
-
-from rest_framework.views import APIView
-from rest_framework import status
-from rest_framework.response import Response
-from usable import global_parameters
-from usable.custom_authentication import CustomAuthentication
-from usable.custom_exceptions import CustomAPIException, custom_serializer_errors
-from usable.global_filters import filter_user
+from  usable.global_imports import *
 from usable.global_validations import validate_password
-from usable.permission import DynamicPermissionMixin
+from usable.global_filters import filter_user
+
+from usable.api_views import BaseApiView
 from user_auths.api.serializers.user_serializers import UserSerializer
 from user_auths.models import User
 
 logger = logging.getLogger('django')
 
-class UserManagementApiView(DynamicPermissionMixin, APIView):
+class UserManagementApiView(BaseApiView):
     """
     Handles the registration of new users. This view does not require authentication or permissions.
     """
-    authentication_classes = [CustomAuthentication]
-    permission_classes = []
 
-
-    def get_permissions(self):
-        if self.request.method == "GET":
-            self.required_permissions = ["view_user"]
-        elif self.request.method == "POST":
-            self.required_permissions = ["add_user"]
-        return super().get_permissions()
+    model_name = "user"
 
     def _validate_creation(self, data):
 

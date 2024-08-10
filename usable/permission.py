@@ -1,6 +1,8 @@
 from rest_framework.permissions import BasePermission
 
 
+
+
 class DynamicPermission(BasePermission):
     def has_permission(self, request, view):
         required_permissions = getattr(view, "required_permissions", [])

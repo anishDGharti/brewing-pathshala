@@ -13,16 +13,16 @@ Classes:
 import logging
 from datetime import datetime
 
+from usable.api_views import BaseApiView
 from user_auths.api.serializers.menu_serializers import MenuSerializer
 from user_auths.models import Menu
-from usable.handle_response import AdminBaseApiView
 
 
 logger = logging.getLogger("django")
 
 
 
-class MenuManagementApiView(AdminBaseApiView):
+class MenuManagementApiView(BaseApiView):
     """
     API endpoint for retrieving a list of menu items.
     Retrieves a list of all active menu items.

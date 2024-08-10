@@ -19,7 +19,6 @@ class LoginApiView(APIView):
 
     def post(self, request):
         try:
-            User
             email, password = login_auth.login_validation(request)
             user = authenticate(request, email=email, password=password)
             if user is not None:

@@ -6,7 +6,7 @@ from user_auths.models import Menu
 from usable.custom_exceptions import CustomAPIException
 from usable import global_parameters
 
-class MenuSerializer(serializers.Serializer):
+class  MenuSerializer(serializers.Serializer):
     referenceId = serializers.CharField(source="reference_id",read_only=True)
     menuName = serializers.CharField(source="menu_name", error_messages={'required': 'Menu name can not be blank.'})
     icon = serializers.CharField(read_only=True)

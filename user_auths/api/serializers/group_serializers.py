@@ -24,3 +24,19 @@ class GroupSerializer(serializers.Serializer):
 
         instance.save()
         return instance
+
+
+
+class PermissionSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField(max_length=255)
+    codename = serializers.CharField(max_length=100)
+    content_type = serializers.CharField(max_length=100)
+
+    def to_representation(self, instance):
+        return {
+            'id': instance.id,
+            'name': instance.name,
+            'codename': instance.codename,
+            'content_type': instance.content_type.model
+        }

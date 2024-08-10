@@ -98,7 +98,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     objects = UserManager()
 
     class Meta:
-        db_table = "coffee_users"
+        db_table = "coffee_user"
         indexes = [
             models.Index(fields=['username'], name='idx_users_username'),
             models.Index(fields=['email'], name='idx_users_email'),

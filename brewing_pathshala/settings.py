@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_auths',
+    'menu',
     'rest_framework',
     'drf_spectacular',
 
@@ -132,16 +133,10 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/home/anishchengre/Desktop/projects/brewing_pathshala/debug.log',
+            'filename': '/home/anishchengre/django/brewing-pathshala/debug.log',
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
+   
 }
 
 
@@ -149,6 +144,14 @@ LOGGING = {
 
 
 REST_FRAMEWORK = {
+     'DEFAULT_AUTHENTICATION_CLASSES': {
+        'auto_common.authentication.CustomAuthentication',
+    },
+    'DEFAULT_PERMISSION_CLASSES': {
+        'usable.permission.DynamicPermission',
+    },
+    'EXCEPTION_HANDLER': 'usable.custom_exceptions.custom_exception_handler',
+
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 

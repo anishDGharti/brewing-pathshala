@@ -16,7 +16,7 @@ logger = logging.getLogger("django")
 
 
 class GroupAPIView(APIView):
-    # authentication_classes = [CustomAuthentication]
+    authentication_classes = [CustomAuthentication]
     permission_classes = []
 
     def get(self, request):
