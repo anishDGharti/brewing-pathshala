@@ -12,7 +12,7 @@ class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.PROTECT,db_column="updated_by",related_name="+",null=True,)
     updated_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=False, help_text="Status to check if the user is active")
+    is_active = models.BooleanField(default=True, help_text="Status to check if the user is active")
 
     is_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True, blank=True)

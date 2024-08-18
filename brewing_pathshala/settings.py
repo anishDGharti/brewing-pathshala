@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_auths',
     'menu',
+    'course',
+
     'rest_framework',
     'drf_spectacular',
 
