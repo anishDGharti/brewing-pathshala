@@ -7,7 +7,7 @@ from usable.global_validations import validate_group_name
 
 
 class GroupSerializer(serializers.Serializer):
-    id = serializers.PrimaryKeyRelatedField(source='pk',read_only=True)
+    id = serializers.PrimaryKeyRelatedField(queryset=Group.objects.all())
     name = serializers.CharField(max_length=50,  error_messages={'required':("Group name must be set.")})
 
     def validate_name(self, value):

@@ -27,6 +27,7 @@ class MenuManagementApiView(BaseApiView):
     API endpoint for retrieving a list of menu items.
     Retrieves a list of all active menu items.
     """
+    model_name = 'menu'
     def get(self, request):
         try:
             return self.handle_serializer_data(Menu, MenuSerializer, True, is_deleted=False)

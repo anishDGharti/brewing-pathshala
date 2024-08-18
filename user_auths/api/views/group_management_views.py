@@ -18,7 +18,7 @@ logger = logging.getLogger("django")
 class GroupAPIView(APIView):
     authentication_classes = [CustomAuthentication]
     permission_classes = []
-
+    serializer_class = GroupSerializer  
     def get(self, request):
       
         groups = Group.objects.all()

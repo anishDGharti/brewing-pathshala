@@ -144,21 +144,22 @@ LOGGING = {
 
 
 REST_FRAMEWORK = {
-     'DEFAULT_AUTHENTICATION_CLASSES': {
-        'auto_common.authentication.CustomAuthentication',
-    },
-    'DEFAULT_PERMISSION_CLASSES': {
+     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'usable.custom_authentication.CustomAuthentication'
+     ],
+    'DEFAULT_PERMISSION_CLASSES': [
         'usable.permission.DynamicPermission',
-    },
+    ],
     'EXCEPTION_HANDLER': 'usable.custom_exceptions.custom_exception_handler',
 
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
-
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Brewing Pathshala',
     'DESCRIPTION': 'Brewing Pathshala is an academy for coffee and barista',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],  # Allow access to the schema
     # OTHER SETTINGS
 }
+
