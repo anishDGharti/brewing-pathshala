@@ -47,7 +47,6 @@ from django.contrib.auth.models import Group
 from rest_framework.exceptions import ValidationError
 def validate_group_name(group_name):
     # Ensure the name contains only letters and spaces
-    print(group_name, 'groupnames')
     if not re.match(r'^[A-Za-z\s]+$', group_name):
         raise ValidationError("Group name must contain only letters and spaces.")
     

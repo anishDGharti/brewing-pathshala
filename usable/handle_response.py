@@ -108,7 +108,6 @@ class HandleResponseMixin:
         """
         logger.error(str(exc), exc_info=True)
         if isinstance(exc, ObjectDoesNotExist):
-            print(" iam in handle view exception")
             return self.handle_does_not_exist()
         return self.api_handle_exception()
 

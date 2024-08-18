@@ -36,19 +36,6 @@ step:4
 
 
 
-  def create(self, validated_data):
-        request = self.context.get('request')
-        if request and request.get_host():
-            domain_name = request.get_host().split(':')[0]
-            tenant = Tenant.get_tenant_by_domain(domain_name)
-            if tenant:
-                user = User(**validated_data)
-                user.tenant = tenant
-                user.set_password(validated_data['password'])
-                user.save()
-                return user
-            else:
-                raise CustomAPIException("No Tenants available")
 
 
 """

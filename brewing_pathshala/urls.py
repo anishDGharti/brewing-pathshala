@@ -8,7 +8,7 @@ urlpatterns = [
     path('', include('user_auths.api.urls.auth_urls')),
     path('', include('user_auths.api.urls.group_urls')),
     path('', include('user_auths.api.urls.permission_urls')),
-    path('', include('user_auths.api.urls.menu_urls')),
+    path('', include('menu.api.urls.sidebar_menu_urls')),
     path('', include('menu.api.urls.coffee_shop_menu_urls')),
 
 

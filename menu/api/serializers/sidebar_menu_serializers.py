@@ -1,12 +1,11 @@
-import datetime
 from django.contrib.auth.models import Group, Permission
 from rest_framework import serializers
 
-from user_auths.models import Menu
+from menu.models import SideBarMenu
 from usable.custom_exceptions import CustomAPIException
 from usable import global_parameters
 
-class  MenuSerializer(serializers.Serializer):
+class  SideBarMenuSerializer(serializers.Serializer):
     referenceId = serializers.CharField(source="reference_id",read_only=True)
     menuName = serializers.CharField(source="menu_name", error_messages={'required': 'Menu name can not be blank.'})
     icon = serializers.CharField(read_only=True)
@@ -17,7 +16,7 @@ class  MenuSerializer(serializers.Serializer):
     def create(self, validated_data):
         roles_data = validated_data.pop('roles')
         permissions_data = validated_data.pop('permissions')
-        menu = Menu.objects.create(**validated_data)
+        menu = SideBarMenu.objects.create(**validated_data)
         menu.roles.set(roles_data)
         menu.permissions.set(permissions_data)
         return menu
@@ -41,10 +40,10 @@ class  MenuSerializer(serializers.Serializer):
     def validate(self, data):
         try:
             if self.instance:
-                if Menu.objects.filter(menu_name=data["menu_name"]).exclude(reference_id=self.instance.reference_id).exists():
+                if SideBarMenu.objects.filter(menu_name=data["menu_name"]).exclude(reference_id=self.instance.reference_id).exists():
                     raise CustomAPIException("This Menu already exist.")
             else:
-                if Menu.objects.filter(menu_name=data["menu_name"]).exists():
+                if SideBarMenu.objects.filter(menu_name=data["menu_name"]).exists():
                     raise CustomAPIException("This Menu already exist.")
             
             return data

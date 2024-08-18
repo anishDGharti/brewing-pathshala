@@ -46,5 +46,5 @@ class BaseModel(models.Model):
 
     @classmethod
     def get_active_objects(cls):
-        return cls.objects.filter(is_deleted=False)    
+        return cls.objects.filter(is_deleted=False, is_active=True)    
 

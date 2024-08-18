@@ -137,17 +137,6 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
 
 
-class Menu(BaseModel):
-    menu_name = models.CharField(max_length=200)
-    parent = models.ForeignKey("self", on_delete=models.PROTECT, null=True, blank=True,related_name="+")
-    ordinal_number  = models.IntegerField(default=0)
-    roles = models.ManyToManyField(Group, blank=True)
-    permissions = models.ManyToManyField(Permission, blank=True)
-    url = models.CharField(max_length=200)  
-    icon = models.CharField(max_length=100, blank=True, null=TabError)
-
-    class Meta:
-        db_table = 'coffee_menu'
 
 
 

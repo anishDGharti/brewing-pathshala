@@ -5,6 +5,7 @@ from rest_framework.exceptions import MethodNotAllowed, AuthenticationFailed
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import status
 from usable import global_parameters
+
 class CustomAPIException(APIException):
     def __init__(self, detail, status_code=None):
         self.detail = detail
@@ -32,7 +33,7 @@ def custom_exception_handler(exc, context):
     if isinstance(exc, MethodNotAllowed):
         return Response({
             global_parameters.RESPONSE_CODE: global_parameters.UNSUCCESS_CODE,
-            global_parameters.RESPONSE_MESSAGE:"Method Not allow use appropriate Method!"
+            global_parameters.RESPONSE_MESSAGE:"Method Not allowed, use appropriate Method!"
         },status=status.HTTP_405_METHOD_NOT_ALLOWED)
     
     if isinstance(exc, PermissionDenied):
