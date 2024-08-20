@@ -73,32 +73,34 @@ class HandleResponseMixin:
         """
         Handle responses with serializer errors and log the errors.
         """
-        logger.error(str(serializer.errors), exc_info=True)
+        # logger.error(str(serializer.errors), exc_info=True,)
+
         message = global_parameters.UNSUCCESS_JSON | {
             global_parameters.ERROR_DETAILS: custom_serializer_errors(serializer.errors)
         }
+        print(serializer.errors)
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
     
     @staticmethod
-    def handle_custom_exception(exc):
+    def handle_custom_exception(exe):
         """
         Handle custom API exceptions and log the details.
         """
-        logger.error(str(exc), exc_info=True)
+        logger.error(str(exe), exc_info=True)
         message = {
             global_parameters.RESPONSE_CODE: global_parameters.UNSUCCESS_CODE,
-            global_parameters.RESPONSE_MESSAGE: exc.detail,
+            global_parameters.RESPONSE_MESSAGE: exe.detail,
         }
-        return Response(message, status=exc.status_code)
+        return Response(message, status=exe.status_code)
 
     @staticmethod
-    def handle_does_not_exist():
+    def handle_does_not_exist(exe):
         """
         Handle the case where a model entry does not exist and return a not found response.
         """
         message = {
             global_parameters.RESPONSE_CODE: global_parameters.UNSUCCESS_CODE,
-            global_parameters.RESPONSE_MESSAGE: "Data not found.",
+            global_parameters.RESPONSE_MESSAGE: f"{exe}",
         }
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
@@ -109,7 +111,7 @@ class HandleResponseMixin:
         """
         logger.error(str(exe), exc_info=True)
         if isinstance(exe, ObjectDoesNotExist):
-            return self.handle_does_not_exist()
+            return self.handle_does_not_exist(exe)
         return self.api_handle_exception()
 
 
