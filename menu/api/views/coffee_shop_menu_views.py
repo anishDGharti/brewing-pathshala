@@ -17,8 +17,5 @@ class CoffeeShopMenuApiView(BaseApiView):
 
 
     def get(self, request):
-        try:
             return self.handle_serializer_data(CoffeeShopMenu, self.serializer_class, True, is_active=True, is_deleted=False)
-        except Exception as exe:
-            return self.handle_view_exception(exe)
-        
+       

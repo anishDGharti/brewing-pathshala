@@ -19,7 +19,8 @@ class BaseCategory(BaseModel):
     def save(self, *args, **kwargs):
         if self.category_slug == "" or self.category_slug == None:
             self.category_slug = slugify(self.category_name) 
-        self.category_slug = slugify(self.category_name) 
+        else:    
+            self.category_slug = slugify(self.category_name) 
     
         super(BaseCategory, self).save(*args, **kwargs)
 

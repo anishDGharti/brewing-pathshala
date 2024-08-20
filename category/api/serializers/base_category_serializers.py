@@ -24,8 +24,7 @@ class BaseCategorySerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         for key, value in validated_data.items():
-            # if key == 'category_name':
-            #     category_name_slug = slugify
+           
            
             setattr(instance, key, value)
         instance.save()

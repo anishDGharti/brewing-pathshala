@@ -16,6 +16,22 @@ class UserManagementApiView(BaseApiView):
     """
 
     model_name = "coffee_user"
+    serializer_class = UserSerializer
+   
+
+
+    def get(self, request):
+        filter_query = request.query_params.get('filter_query')
+        query_set = filter_user(request, filter_query)
+
+        if query_set is None:
+            message = {
+                global_parameters.RESPONSE_CODE: global_parameters.SUCCESS_CODE,
+                global_parameters.RESPONSE_MESSAGE: "No users found",
+            }
+            return Response(message, status=status.HTTP_200_OK)
+        
+        return self.handle_serializer_data(User, serializer_class=self.serializer_class, **query_set)
 
     def _validate_creation(self, data):
 
@@ -49,31 +65,14 @@ class UserManagementApiView(BaseApiView):
                 raise CustomAPIException("Username already exists.")
             else:
                 data['existing_user'] = existing_user
-
-
-    def get(self, request):
-        filter_query = request.query_params.get('filter_query')
-        query_set = filter_user(request, filter_query)
-
-        if query_set is None:
-            message = {
-                global_parameters.RESPONSE_CODE: global_parameters.SUCCESS_CODE,
-                global_parameters.RESPONSE_MESSAGE: "No users found",
-            }
-            return Response(message, status=status.HTTP_200_OK)
-        
-        serializer = UserSerializer(query_set, many=True)
-        message = global_parameters.SUCCESS_JSON | {global_parameters.DATA: serializer.data}
-        return Response(message, status=status.HTTP_200_OK)
-    
      
     def post(self, request):
-        if not request.body:
-                return Response(global_parameters.BODY_NOT_BLANK_JSON, status=status.HTTP_400_BAD_REQUEST)
+        validate_request_body =  self.validate_request_body(request)
+        if validate_request_body:
+            return validate_request_body
         try:
             data = request.data.copy()
             self._validate_creation(data)
-
             if 'existing_user' in data:
                 user = data['existing_user']
                 user.is_deleted = False
@@ -84,28 +83,18 @@ class UserManagementApiView(BaseApiView):
             if serializer.is_valid():
 
                 serializer.save()
-                message = {
-                    global_parameters.RESPONSE_CODE: global_parameters.SUCCESS_CODE,
-                    global_parameters.RESPONSE_MESSAGE: "User register successfully.",
-                    'message':'User registered Successfully',
-                }
-                return Response(message, status=status.HTTP_200_OK)
+                
+                return self.handle_success("User Created Successfully")
  
-            
-            message = global_parameters.UNSUCCESS_JSON|{global_parameters.ERROR_DETAILS:custom_serializer_errors(serializer.errors)}
+            return self.handle_invalid_serializer(serializer)
+       
+        except CustomAPIException as exe:
+            return self.handle_custom_exception(exe)
 
-            return Response(message, status = status.HTTP_400_BAD_REQUEST)
-        
-        except CustomAPIException as exc:
-            logger.error(str(exc), exc_info=True)
-            message = {
-                global_parameters.RESPONSE_CODE: global_parameters.UNSUCCESS_CODE,
-                global_parameters.RESPONSE_MESSAGE: str(exc),
-            }
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
         except Exception as exe:
-            logger.error(str(exe), exc_info=True)
-            return Response(global_parameters.INTERNAL_SERVER_ERROR_JSON, status=status.HTTP_500_INTERNAL_SERVER_ERROR,)
+            return self.handle_view_exception(exe)
 
     def put(self, request, reference_id=None):
         return self.update(request, reference_id, partial=False)
@@ -114,34 +103,26 @@ class UserManagementApiView(BaseApiView):
         return self.update(request, reference_id, partial=True)
 
     def update(self, request, reference_id=None, partial=False): 
-        if not request.body:
-            return Response(global_parameters.BODY_NOT_BLANK_JSON, status=status.HTTP_400_BAD_REQUEST)
-        
+        validate_request_body =  self.validate_request_body(request)
+        if validate_request_body:
+            return validate_request_body
         try:
             user = User.objects.get(reference_id=reference_id, is_deleted=False)
             serializer = UserSerializer(user, data=request.data, partial=partial, context={'user': request.user})
             if serializer.is_valid():
                 serializer.save()
-                message = {
-                    global_parameters.RESPONSE_CODE: global_parameters.SUCCESS_CODE,
-                    global_parameters.RESPONSE_MESSAGE: "User updated successfully."
-                }
-                return Response(message, status=status.HTTP_200_OK)
+                return self.handle_success("User Updated Successfully")
+            
 
-            message = global_parameters.UNSUCCESS_JSON | {global_parameters.ERROR_DETAILS: custom_serializer_errors(serializer.errors)}
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+            return self.handle_invalid_serializer(serializer)
 
-        except User.DoesNotExist as exe:
-            logger.error(str(exe), exc_info=True)
-            message = {
-                global_parameters.RESPONSE_CODE: global_parameters.UNSUCCESS_CODE,
-                global_parameters.RESPONSE_MESSAGE: "User with the given reference id not found"
-            }
-            return Response(message, status=status.HTTP_404_NOT_FOUND)
-    
+        except CustomAPIException as exe:
+            return self.handle_custom_exception(exe)
+
+
+
         except Exception as exe:
-            logger.error(str(exe), exc_info=True)
-            return Response(global_parameters.INTERNAL_SERVER_ERROR_JSON, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return self.handle_view_exception(exe)
         
 
 
@@ -150,28 +131,9 @@ class UserManagementApiView(BaseApiView):
             user = User.objects.get(reference_id=reference_id, is_deleted=False)
             user.delete()
 
-            message = {
-                    global_parameters.RESPONSE_CODE: global_parameters.SUCCESS_CODE,
-                    global_parameters.RESPONSE_MESSAGE: "User deleted Successfully.",
-            }
-            return Response(message, status=status.HTTP_200_OK)
-        
-        except User.DoesNotExist as exe:
-            logger.error(str(exe), exc_info=True)
-            message = {
-                global_parameters.RESPONSE_CODE: global_parameters.UNSUCCESS_CODE,
-                global_parameters.RESPONSE_MESSAGE:"User data not found."
-            }
-            return Response(message, status = status.HTTP_400_BAD_REQUEST)
-        
+            return self.handle_success("User deleted succedssfully")
         except Exception as exe:
-            logger.error(str(exe), exc_info=True)
-            return Response(global_parameters.INTERNAL_SERVER_ERROR_JSON, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-
-
-
-
+            return self.handle_view_exception(exe)
 
 
 

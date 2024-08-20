@@ -24,9 +24,10 @@ content_types = ContentType.objects.all()
 all_permissions = Permission.objects.filter(content_type__in=content_types).prefetch_related('content_type')
 # cache this for optimiztion
 
+
 class PermissionsForGroupAndUserAPIView(BaseApiView):
 
-    model_name = 'permission'
+    model_name = 'auth_permission'
     def get(self, request, user_reference_id=None, group_id=None):
         try:
             if group_id:
@@ -36,8 +37,8 @@ class PermissionsForGroupAndUserAPIView(BaseApiView):
                 user = get_object_or_404(User, reference_id=user_reference_id)
                 selected_permissions = user.user_permissions.all()
 
-        except Exception as exc:
-            return self.handle_does_not_exist()
+        except Exception as exe:
+            return self.handle_does_not_exist(exe)
         
         available_permissions = set(all_permissions) - set(selected_permissions)
 
