@@ -10,15 +10,15 @@ from usable.constants import CATEGORY
 
 class BaseCategory(BaseModel):
     parent_category  =  models.CharField(max_length=50, choices=CATEGORY)
-    category_name = models.CharField(max_length=50)
-    category_slug = models.SlugField()
+    category_name = models.CharField(max_length=50, unique=True)
+    category_slug = models.SlugField(max_length=100, unique=True)
     image = models.BinaryField(null=True)
 
 
 
     def save(self, *args, **kwargs):
-        if self.slug == "" or self.slug == None:
-            self.slug = slugify(self.title) 
+        if self.category_slug == "" or self.category_slug == None:
+            self.category_slug = slugify(self.category_name) 
         super(BaseCategory, self).save(*args, **kwargs)
 
 

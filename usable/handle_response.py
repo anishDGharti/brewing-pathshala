@@ -55,6 +55,7 @@ class HandleResponseMixin:
             return Response(message, status=status.HTTP_200_OK)
         
         except Exception as exe:
+            print(exe)
             return HandleResponseMixin.handle_view_exception(exe)
     
     @staticmethod
@@ -102,12 +103,12 @@ class HandleResponseMixin:
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
-    def handle_view_exception(self, exc):
+    def handle_view_exception(self, exe):
         """
         Determine the type of exception and delegate to the appropriate handler.
         """
-        logger.error(str(exc), exc_info=True)
-        if isinstance(exc, ObjectDoesNotExist):
+        logger.error(str(exe), exc_info=True)
+        if isinstance(exe, ObjectDoesNotExist):
             return self.handle_does_not_exist()
         return self.api_handle_exception()
 

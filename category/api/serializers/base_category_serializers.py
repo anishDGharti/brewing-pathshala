@@ -1,11 +1,14 @@
 from rest_framework import serializers
+
+from usable.constants import CATEGORY
 from ...models import BaseCategory
 
 
 
 class BaseCategorySerializer(serializers.Serializer):
     referenceId = serializers.CharField(source="reference_id", read_only=True)
-    categoryName = serializers.CharField(max_length=50, source='category_name')
+    parentCategory = serializers.ChoiceField(choices=CATEGORY, source='parent_category', error_messages={'required': 'Parent Category cannot be blank'})
+    categoryName = serializers.CharField(max_length=50, source='category_name',error_messages={'required': 'Category cannot be blank'})
 
 
 
