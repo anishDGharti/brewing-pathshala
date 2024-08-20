@@ -33,3 +33,11 @@ DURATION_FORMAT_CHOICES = [
         ('hours', 'Hours'),
         ('days', 'Days'),
     ]
+
+
+
+
+CATEGORY = (
+        ('CoffeeShopMenuCategory', 'CoffeeShopMenuCategory'),
+        ('PhysicalCourseCategory', 'PhysicalCourseCategory'),
+    )

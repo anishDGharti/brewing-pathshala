@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+
 from .generators import generate_uuid
 
 from django.utils import timezone
@@ -47,4 +48,6 @@ class BaseModel(models.Model):
     @classmethod
     def get_active_objects(cls):
         return cls.objects.filter(is_deleted=False, is_active=True)    
+
+
 

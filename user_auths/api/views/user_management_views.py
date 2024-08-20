@@ -15,7 +15,7 @@ class UserManagementApiView(BaseApiView):
     Handles the registration of new users. This view does not require authentication or permissions.
     """
 
-    model_name = "user"
+    model_name = "coffee_user"
 
     def _validate_creation(self, data):
 

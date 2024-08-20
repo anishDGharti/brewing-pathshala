@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'user_auths',
     'menu',
     'course',
+    'category',
 
     'rest_framework',
     'drf_spectacular',
