@@ -132,15 +132,33 @@ AUTH_USER_MODEL = 'user_auths.User'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'timestamp': {
+            'format': '{asctime} {levelname} {message} {lineno} ',
+            'style': '{',
+
+        },
+
+    },
     'handlers': {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/home/anishchengre/django/brewing-pathshala/debug.log',
+            'filename': 'debug.log',
+            'formatter': 'timestamp'
         },
+
+
     },
-   
-}
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+
+    },
+} 
 
 
 

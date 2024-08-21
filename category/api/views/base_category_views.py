@@ -7,7 +7,8 @@ from category.api.serializers.base_category_serializers import BaseCategorySeria
 from category.models import BaseCategory
 from usable.api_views import BaseApiView
 from usable.custom_exceptions import CustomAPIException
-
+from django.core.exceptions import ValidationError
+from rest_framework.response import Response
 
 class BaseCategoryApiView(BaseApiView):
     """
@@ -33,7 +34,7 @@ class BaseCategoryApiView(BaseApiView):
         
             if serializer.is_valid():
                 serializer.save(created_by=request.user)
-                return self.handle_success(f"Category for parent category {request.data['parentCategory']}  created successfully.")
+                return self.handle_success(f"{request.data['parentCategory']} created successfully.")
 
             return self.handle_invalid_serializer(serializer)
         
@@ -41,6 +42,8 @@ class BaseCategoryApiView(BaseApiView):
         except CustomAPIException as exe:
             return self.handle_custom_exception(exe)
 
+        except ValidationError as exe:
+            return Response({'fuck': exe})
 
 
         except Exception as exe:
