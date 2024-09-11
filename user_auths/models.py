@@ -5,7 +5,6 @@ from django.db.models import Q, UniqueConstraint
 from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
-from django.dispatch import receiver
 
 from usable.constants import STATE_CHOICES
 

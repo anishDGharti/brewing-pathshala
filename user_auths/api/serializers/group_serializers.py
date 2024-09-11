@@ -9,6 +9,17 @@ from usable.global_validations import validate_group_name
 class GroupSerializer(serializers.Serializer):
     id = serializers.PrimaryKeyRelatedField(read_only=True)
     name = serializers.CharField(max_length=50,  error_messages={'required':("Group name must be set.")})
+    permissions = serializers.SerializerMethodField()
+
+
+    def get_permissions(self, obj):
+        return [{
+            'id': perm.id,
+            'name': perm.name,
+            'codename': perm.codename,
+            'content_type': perm.content_type.app_label  # Example field, adjust as needed
+        } for perm in obj.permissions.all()]
+
 
     def validate_name(self, value):
         return validate_group_name(value)

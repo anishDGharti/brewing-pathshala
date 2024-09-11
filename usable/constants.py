@@ -25,14 +25,10 @@ PAYMENT_STATUS = (
 
 
 CLASS_TYPE_CHOICES = [
-        ('regular', 'Regular'),
-        ('private', 'Private'),
+        ('Regular Class', 'regular_class'),
+        ('Private Class', 'private_class'),
     ]
 
-DURATION_FORMAT_CHOICES = [
-        ('hours', 'Hours'),
-        ('days', 'Days'),
-    ]
 
 
 

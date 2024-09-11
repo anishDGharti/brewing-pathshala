@@ -3,7 +3,6 @@ from django.db import models
 from usable.base_models import BaseModel
 from usable.constants import CATEGORY
 # Create your models here.
-from django.core.exceptions import ValidationError
 
 
 class BaseCategory(BaseModel):
@@ -14,7 +13,7 @@ class BaseCategory(BaseModel):
 
     class Meta:
         db_table = 'coffee_base_category'
-        unique_together = ('parent_category', 'category_name', 'is_active', 'is_deleted')   
+        unique_together = ('parent_category', 'category_slug', 'is_active', 'is_deleted')   
 
         
 
